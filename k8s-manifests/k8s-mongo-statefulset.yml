@@ -1,0 +1,122 @@
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: mongo-sidecar
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mongo-sidecar
+  namespace: api-users
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: system:serviceaccount:api-users:mongo-sidecar
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: mongo-sidecar
+subjects:
+- kind: ServiceAccount
+  name: mongo-sidecar
+  namespace: api-users
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+  namespace: api-users
+  labels:
+    name: mongo
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  clusterIP: None
+  selector:
+    role: mongo
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    environment: test
+    role: mongo
+  name: mongo
+  namespace: api-users
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      environment: test
+      role: mongo
+  serviceName: mongo
+  template:
+    metadata:
+      labels:
+        environment: test
+        role: mongo
+    spec:
+      containers:
+      - command:
+        - mongod
+        - --replSet
+        - rs0
+        - --bind_ip
+        - 0.0.0.0
+        image: mongo:4.0.6
+        imagePullPolicy: IfNotPresent
+        name: mongo
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 125m
+            memory: 512Mi
+          limits:
+            memory: 512Mi
+        volumeMounts:
+        - mountPath: /data/db
+          name: mongo-persistent-storage
+      - env:
+        - name: MONGO_SIDECAR_POD_LABELS
+          value: role=mongo,environment=test
+        image: cvallance/mongo-k8s-sidecar
+        imagePullPolicy: Always
+        name: mongo-sidecar
+        resources:
+          requests:
+            cpu: 125m
+            memory: 256Mi
+          limits:
+            memory: 256Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      serviceAccount: mongo-sidecar
+      serviceAccountName: mongo-sidecar
+      terminationGracePeriodSeconds: 30
+  updateStrategy:
+    type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-persistent-storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
