@@ -4,5 +4,5 @@ metadata:
   name: api-config
   namespace: api-users
 data:
-  MONGODB_URL: mongodb://mongo-0.mongo:27017,mongo-1.mongo:27017,mongo-2.mongo:27017/titanic?replicaSet=rs0
+  MONGODB_URL: mongodb://mongo-0.mongo:27017,mongo-1.mongo:27017,mongo-2.mongo:27017/users?replicaSet=rs0
   GIN_MODE: release

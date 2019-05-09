@@ -14,7 +14,7 @@ var (
 )
 
 const (
-	LocalMongoDBUrl = "mongodb://localhost:27017/titanic"
+	LocalMongoDBUrl = "mongodb://localhost:27017/users"
 )
 
 func Connect() {

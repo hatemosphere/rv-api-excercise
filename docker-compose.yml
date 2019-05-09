@@ -14,7 +14,7 @@ services:
       context: api
       dockerfile: Dockerfile
     environment:
-      - MONGODB_URL=mongodb://mongo:27017/titanic
+      - MONGODB_URL=mongodb://mongo:27017/users
     ports:
       - "3000:3000"
     depends_on:
