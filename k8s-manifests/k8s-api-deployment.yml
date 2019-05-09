@@ -1,3 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-users
+  name: api-users
+  namespace: api-users
+spec:
+  type: LoadBalancer
+  selector:
+    app: api-users
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -58,3 +75,16 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app: api-users
+  name: api-users
+  namespace: api-users
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: api-users

@@ -4,6 +4,14 @@
 
 * All *User* struct fields are required, so it's impossible to create a new user without filling out every field. Also, according to RFC, PUT should replace the whole object if it exists, so i'm using Mongo's native *Upsert* function. In ideal scenario the validation logging should be improved and client should get more detailed errors. (see *Potential Improvements*)
 
+* I've chosen Kubernetes cluster as deployment option for this service and assumed that:
+    * Kubernetes cluster is already installed and has required capacity
+    * Kubernetes cluster architecture and setup/configuration best practices for the major cloud providers are out of the scope of this excercise
+
+## Deployment diagram
+
+![Deployment diagram](api-users.png)
+
 ## Run instructions
 
 ### docker-compose setup
@@ -73,6 +81,7 @@ $ kubectl delete ns api-users
 * [K8S] Template *Kubernetes* manifests with *Helm\kustomize\whatever* (*kustomize* is integrated into newer *kubectl* versions, *Helm* is not just a templating engine and it has its own pros and cons)
 * [K8S] Think about proper *readiness\liveness* probes - eg. implement */healthz* endpoint and decide if it's needed to include *MongoDB* connectivity check. This is a big holy war topic - some of the big companies are not using *readiness\liveness* at all intentionally - in some cases, they cause more issues than they can solve.
 * [K8S] *HorizontalPodAutoscaler* based on *Prometheus* app metrics (*custom metrics* via adapter) or the ones from *Ingress* (*object metrics*)
+* [K8S] Add *namespace-wide* limits and quotas
 * [K8S] Productionalize *MongoDB Kubernetes* setup (stable *Helm* chart can be used as a starting point)
 
 * [CODE] Potentially go mad until 101% result for *cloud and Kubernetes nativeness* (eg. with *WATCH* method on *API* via *WebSockets*, hot config reloads etc.)
