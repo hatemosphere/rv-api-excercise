@@ -21,11 +21,11 @@ func DateStringProcessor(dateLayout, dateString string) (time.Time, bool) {
 }
 
 // DateDiffer function is used to validate date of birth
-func DateDiffer(date time.Time) (int, bool) {
+func DateDiffer(date time.Time) int {
 	timeNow := time.Now()
 	diff := timeNow.Sub(date)
 	daysDiff := int(diff.Hours() / 24)
-	return daysDiff, true
+	return daysDiff
 }
 
 // BirthDayPrinter function prints a birthday message for username

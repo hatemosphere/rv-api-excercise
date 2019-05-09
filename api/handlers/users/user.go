@@ -63,11 +63,8 @@ func CreateOrUpdate(c *gin.Context) {
 		return
 	}
 
-	dateDifference, ok := DateDiffer(userDateOfBirth)
-	if !ok {
-		log.Printf("Problem calculating date difference for user %s:", user.Username)
-		return
-	} else if dateDifference < 1 {
+	dateDifference := DateDiffer(userDateOfBirth)
+	if dateDifference < 1 {
 		log.Printf("%s is not born yet or born today", user.Username)
 		c.Status(400)
 		return
