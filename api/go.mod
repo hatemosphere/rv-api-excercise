@@ -3,6 +3,7 @@ module github.com/hatemosphere/rv-api-excercise/api
 go 1.12
 
 require (
+	github.com/bouk/monkey v1.0.1
 	github.com/gin-gonic/gin v1.4.0
 	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-playground/locales v0.12.1 // indirect

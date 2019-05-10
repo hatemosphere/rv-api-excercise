@@ -7,12 +7,12 @@ import (
 )
 
 const (
-	dateLayout = "2006-01-02"
+	DateLayout = "2006-01-02"
 )
 
 // DateStringProcessor function converts string to time type
-func DateStringProcessor(dateLayout, dateString string) (time.Time, bool) {
-	date, err := time.Parse(dateLayout, dateString)
+func DateStringProcessor(DateLayout, dateString string) (time.Time, bool) {
+	date, err := time.Parse(DateLayout, dateString)
 	if err != nil {
 		log.Printf("Cannot parse date string: %v", err)
 		return time.Time{}, false
@@ -28,8 +28,8 @@ func DateDiffer(date time.Time) int {
 	return daysDiff
 }
 
-// BirthDayPrinter function prints a birthday message for username
-func BirthDayPrinter(username string, userBirthdayDate time.Time) (string, bool) {
+// BirhdayPrinter function prints a birthday message for username
+func BirhdayPrinter(username string, userBirthdayDate time.Time) (string, bool) {
 	timeNow := time.Now()
 	userBirthdayDateMonth, userBirthdayDateDay := userBirthdayDate.Month(), userBirthdayDate.Day()
 	yearNow, monthNow, dayNow := timeNow.Year(), timeNow.Month(), timeNow.Day()

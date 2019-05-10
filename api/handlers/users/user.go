@@ -26,14 +26,14 @@ func GetOne(c *gin.Context) {
 		}
 		return
 	}
-	userDateOfBirth, ok := DateStringProcessor(dateLayout, user.DateOfBirth)
+	userDateOfBirth, ok := DateStringProcessor(DateLayout, user.DateOfBirth)
 	if !ok {
 		log.Printf("Problem converting date of birthday string for user %s:", user.Username)
 		c.Status(400)
 		return
 	}
 
-	message, ok := BirthDayPrinter(user.Username, userDateOfBirth)
+	message, ok := BirhdayPrinter(user.Username, userDateOfBirth)
 	if !ok {
 		log.Printf("Problem printing birthday message for user %s:", user.Username)
 	}
@@ -56,7 +56,7 @@ func CreateOrUpdate(c *gin.Context) {
 		return
 	}
 
-	userDateOfBirth, ok := DateStringProcessor(dateLayout, user.DateOfBirth)
+	userDateOfBirth, ok := DateStringProcessor(DateLayout, user.DateOfBirth)
 	if !ok {
 		log.Printf("Problem converting date of birthday string for user %s:", user.Username)
 		c.Status(400)
