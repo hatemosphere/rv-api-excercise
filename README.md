@@ -14,6 +14,13 @@
 
 ## Run instructions
 
+### Basic test setup
+
+```bash
+$ cd api/tests
+$ go test
+```
+
 ### docker-compose setup
 
 Initial setup:
